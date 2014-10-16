@@ -129,4 +129,8 @@ public class NewsManager
 
 	return items;
     }
+
+    public ArrayList<NewsItem> getItems() {
+	return items;
+    }
 }

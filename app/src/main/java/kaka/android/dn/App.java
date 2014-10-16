@@ -26,6 +26,7 @@ public class App extends Application
     public static App INSTANCE;
     public static final boolean DEBUG = true;
     public static final int SDK = android.os.Build.VERSION.SDK_INT;
+    public static NewsManager news;
 
     private static Thread uiThread;
     private static Handler uiHandler;
@@ -37,6 +38,9 @@ public class App extends Application
     public void onCreate() {
 	super.onCreate();
 	App.INSTANCE = this;
+
+	news = new NewsManager();
+	news.refresh();
 
 	uiThread = context().getMainLooper().getThread();
 	uiHandler = new Handler(context().getMainLooper());

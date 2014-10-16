@@ -1,35 +1,33 @@
 package kaka.android.dn;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity implements NewsManager.EventListener
 {
-    private NewsManager news;
+    private NewsListFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+	App.news.addEventListener(this);
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, fragment = new NewsListFragment())
                     .commit();
         }
-
-	news = new NewsManager();
-	news.addEventListener(this);
-	news.refresh();
     }
 
 
@@ -55,23 +53,64 @@ public class MainActivity extends Activity implements NewsManager.EventListener
     @Override
     public void onEvent(NewsManager.Event e) {
 	if (e == NewsManager.Event.REFRESHED_NEWS) {
-	   // TODO
+	   fragment.refreshItems();
 	}
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class NewsListFragment extends ListFragment {
+	private BaseAdapter adapter;
 
-        public PlaceholderFragment() {
+        public NewsListFragment() {
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_list, container, false);
-            return rootView;
-        }
+	public void refreshItems() {
+	    adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+	    super.onActivityCreated(savedInstanceState);
+	    setListAdapter(adapter = new BaseAdapter() {
+		@Override
+		public int getCount() {
+		    return App.news.getItems() == null ? 0 : App.news.getItems().size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+		    return App.news.getItems().get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+		    return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+		    Holder holder;
+		    if (convertView == null) {
+			convertView = LayoutInflater.from(App.context())
+				.inflate(R.layout.list_item, parent, false);
+			convertView.setTag(holder = new Holder());
+			holder.title = App.findViewById(convertView, R.id.title);
+		    } else {
+			holder = (Holder)convertView.getTag();
+		    }
+
+		    NewsItem item = (NewsItem)getItem(position);
+		    holder.title.setText(item.getTitle());
+
+		    return convertView;
+		}
+
+		class Holder {
+		    TextView title;
+		}
+	    });
+	}
     }
 }
