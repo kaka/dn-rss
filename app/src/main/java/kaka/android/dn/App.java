@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class App extends Application
 {
     public static App INSTANCE;
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public static final int SDK = android.os.Build.VERSION.SDK_INT;
 
     private static Thread uiThread;

@@ -13,7 +13,9 @@ import android.os.Build;
 
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements NewsManager.EventListener
+{
+    private NewsManager news;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,10 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+	news = new NewsManager();
+	news.addEventListener(this);
+	news.refresh();
     }
 
 
@@ -44,6 +50,13 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onEvent(NewsManager.Event e) {
+	if (e == NewsManager.Event.REFRESHED_NEWS) {
+	   // TODO
+	}
     }
 
     /**
