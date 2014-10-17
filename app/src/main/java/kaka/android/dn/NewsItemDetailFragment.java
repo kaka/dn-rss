@@ -43,12 +43,12 @@ public class NewsItemDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_newsitem_detail, container, false);
 
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.newsitem_detail)).setText(mItem.getDescription());
+	    ((TextView) rootView.findViewById(R.id.title)).setText(mItem.getTitle());
+	    ((TextView) rootView.findViewById(R.id.description)).setText(mItem.getDescription());
         }
 
         return rootView;
