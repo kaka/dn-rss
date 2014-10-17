@@ -43,6 +43,10 @@
   <style name="Button.DetailReadMore" parent="@android:style/Widget.Holo.Button.Borderless">
     <item name="android:textColor">@color/gray_dark</item>
     <item name="android:fontFamily">sans-serif-normal</item>
+    <item name="android:shadowColor">@color/gray</item>
+    <item name="android:shadowDx">0</item>
+    <item name="android:shadowDy">2</item>
+    <item name="android:shadowRadius">2</item>
   </style>
 
 </resources>
