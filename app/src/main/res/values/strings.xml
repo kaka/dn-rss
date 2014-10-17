@@ -4,5 +4,7 @@
   <string name="app_name">DN</string>
   <string name="item_published">Publicerad %s</string>
   <string name="detail_read_more">Läs hela artikeln på DN.se</string>
+  <string name="today">idag</string>
+  <string name="yesterday">igår</string>
 
 </resources>

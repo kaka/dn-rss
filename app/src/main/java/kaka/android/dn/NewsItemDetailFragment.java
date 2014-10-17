@@ -54,8 +54,18 @@ public class NewsItemDetailFragment extends Fragment {
         if (mItem != null) {
 	    ((TextView)rootView.findViewById(R.id.title)).setText(mItem.getTitle());
 	    ((TextView)rootView.findViewById(R.id.description)).setText(mItem.getDescription());
-	    String date = mItem.getDateWithFormat("yyyy-MM-dd HH:mm:ss");
+
+	    String date;
+	    if (Utils.isToday(mItem.getDate())) {
+		date = getString(R.string.today);
+	    } else if (Utils.isYesterday(mItem.getDate())) {
+		date = getString(R.string.yesterday);
+	    } else {
+		date = mItem.getDateWithFormat("yyyy-MM-dd");
+	    }
+	    date += " " + mItem.getDateWithFormat("HH:mm");
 	    ((TextView)rootView.findViewById(R.id.date)).setText(getString(R.string.item_published, date));
+
 	    rootView.findViewById(R.id.read_more).setOnClickListener(new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
