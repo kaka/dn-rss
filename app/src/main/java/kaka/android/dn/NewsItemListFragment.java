@@ -98,18 +98,20 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 			    .inflate(R.layout.list_item, parent, false);
 		    convertView.setTag(holder = new Holder());
 		    holder.title = App.findViewById(convertView, R.id.title);
+		    holder.time = App.findViewById(convertView, R.id.time);
 		} else {
 		    holder = (Holder)convertView.getTag();
 		}
 
 		NewsItem item = (NewsItem)getItem(position);
 		holder.title.setText(item.getTitle());
+		holder.time.setText(Utils.timeAgo(item.getDate()));
 
 		return convertView;
 	    }
 
 	    class Holder {
-		TextView title;
+		TextView title, time;
 	    }
 	});
     }
