@@ -4,5 +4,7 @@
     <string name="app_name">DN</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_newsitem_list">NewsItems</string>
+    <string name="title_newsitem_detail">NewsItem Detail</string>
 
 </resources>

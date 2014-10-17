@@ -12,6 +12,10 @@ public class NewsItem
 	this.title = title;
     }
 
+    public String getId() {
+	return link;
+    }
+
     public String getLink() {
 	return link;
     }

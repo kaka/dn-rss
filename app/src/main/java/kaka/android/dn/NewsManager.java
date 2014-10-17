@@ -133,4 +133,11 @@ public class NewsManager
     public ArrayList<NewsItem> getItems() {
 	return items;
     }
+
+    public NewsItem getItemById(String guid) {
+	for (NewsItem item : items)
+	    if (item.getId().equals(guid))
+		return item;
+	return null;
+    }
 }
