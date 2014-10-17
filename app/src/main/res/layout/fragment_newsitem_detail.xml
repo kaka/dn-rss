@@ -15,6 +15,15 @@
       android:text="Title"
       style="@style/Text.DetailTitle"
       />
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="2dp"
+      android:layout_marginLeft="@dimen/text_horizontal_margin"
+      android:layout_marginRight="@dimen/text_horizontal_margin"
+      android:background="#f00"
+      />
+
   <TextView
       android:id="@+id/description"
       android:layout_width="match_parent"
@@ -23,6 +32,15 @@
       android:text="Description"
       style="@style/Text.DetailDescription"
       />
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1px"
+      android:layout_marginLeft="@dimen/text_horizontal_margin"
+      android:layout_marginRight="@dimen/text_horizontal_margin"
+      android:background="#2000"
+      />
+
   <TextView
       android:id="@+id/date"
       android:layout_width="match_parent"
