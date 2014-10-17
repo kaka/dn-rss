@@ -26,4 +26,10 @@
     <item name="android:textSize">20sp</item>
   </style>
 
+  <style name="Text.DetailDate">
+    <item name="android:fontFamily">sans-serif-light</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:textStyle">italic</item>
+    <item name="android:gravity">end</item>
+  </style>
 </resources>

@@ -115,7 +115,7 @@ public class NewsManager
 				item.setLink(text);
 			    } else if (name.equals("description")) {
 				item.setDescription(text);
-			    } else if (name.equals("dc:date")) {
+			    } else if (name.equals("pubDate")) {
 				item.setPubDate(text);
 			    }
 			}

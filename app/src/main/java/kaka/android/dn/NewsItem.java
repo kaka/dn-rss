@@ -1,8 +1,15 @@
 package kaka.android.dn;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class NewsItem
 {
+    private static final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+
     private String title, link, description, pubDate;
+    private Date date;
 
     public String getTitle() {
 	return title;
@@ -38,5 +45,18 @@ public class NewsItem
 
     public void setPubDate(String pubDate) {
 	this.pubDate = pubDate;
+	try {
+	    date = format.parse(pubDate);
+	} catch(Exception e) {
+	    App.log.e(this, String.format("Error while parsing date: '%s'", pubDate), e);
+	}
+    }
+
+    public Date getDate() {
+	return date;
+    }
+
+    public String getDateWithFormat(String format) {
+	return new SimpleDateFormat(format).format(date);
     }
 }

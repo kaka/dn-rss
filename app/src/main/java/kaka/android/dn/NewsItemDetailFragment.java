@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 
 /**
  * A fragment representing a single NewsItem detail screen.
@@ -47,8 +49,10 @@ public class NewsItemDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_newsitem_detail, container, false);
 
         if (mItem != null) {
-	    ((TextView) rootView.findViewById(R.id.title)).setText(mItem.getTitle());
-	    ((TextView) rootView.findViewById(R.id.description)).setText(mItem.getDescription());
+	    ((TextView)rootView.findViewById(R.id.title)).setText(mItem.getTitle());
+	    ((TextView)rootView.findViewById(R.id.description)).setText(mItem.getDescription());
+	    String date = mItem.getDateWithFormat("yyyy-MM-dd HH:mm:ss");
+	    ((TextView)rootView.findViewById(R.id.date)).setText(getString(R.string.item_published, date));
         }
 
         return rootView;
