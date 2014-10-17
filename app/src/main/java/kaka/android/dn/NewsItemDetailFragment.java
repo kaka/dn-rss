@@ -41,6 +41,9 @@ public class NewsItemDetailFragment extends Fragment {
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
 	    mItem = App.news.getItemById(getArguments().getString(ARG_ITEM_ID));
+	    if (mItem == null) {
+		getActivity().getFragmentManager().popBackStack();
+	    }
         }
     }
 

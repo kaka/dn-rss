@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class NewsManager
 {
-    private ArrayList<NewsItem> items;
+    private ArrayList<NewsItem> items = new ArrayList<NewsItem>();
     private ArrayList<EventListener> eventListeners = new ArrayList<EventListener>();
 
     public void addEventListener(EventListener listener) {
