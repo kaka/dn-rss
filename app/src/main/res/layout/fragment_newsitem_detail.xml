@@ -13,6 +13,7 @@
       android:layout_height="wrap_content"
       android:textIsSelectable="true"
       android:text="Title"
+      style="@style/Text.DetailTitle"
       />
   <TextView
       android:id="@+id/description"
@@ -20,6 +21,7 @@
       android:layout_height="match_parent"
       android:textIsSelectable="true"
       android:text="Description"
+      style="@style/Text.DetailDescription"
       />
 
 </LinearLayout>

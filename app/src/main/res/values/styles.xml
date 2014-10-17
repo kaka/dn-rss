@@ -1,8 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-    </style>
+  <style name="Text" parent="android:TextAppearance">
+    <item name="android:textColor">@color/gray_dark</item>
+    <item name="android:paddingLeft">@dimen/text_horizontal_padding</item>
+    <item name="android:paddingRight">@dimen/text_horizontal_padding</item>
+    <item name="android:paddingTop">@dimen/text_vertical_padding</item>
+    <item name="android:paddingBottom">@dimen/text_vertical_padding</item>
+  </style>
+
+  <style name="Text.List">
+    <item name="android:fontFamily">sans-serif-condensed</item>
+    <item name="android:textSize">20sp</item>
+    <item name="android:lines">2</item>
+    <item name="android:ellipsize">end</item>
+  </style>
+
+  <style name="Text.DetailTitle">
+    <item name="android:fontFamily">sans-serif-condensed</item>
+    <item name="android:textSize">32sp</item>
+  </style>
+
+  <style name="Text.DetailDescription">
+    <item name="android:fontFamily">sans-serif-light</item>
+    <item name="android:textSize">20sp</item>
+  </style>
 
 </resources>
