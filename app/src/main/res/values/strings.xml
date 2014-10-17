@@ -7,5 +7,6 @@
   <string name="title_newsitem_list">NewsItems</string>
   <string name="title_newsitem_detail">NewsItem Detail</string>
   <string name="item_published">Publicerad %s</string>
+  <string name="detail_read_more">Läs hela artikeln på DN.se</string>
 
 </resources>

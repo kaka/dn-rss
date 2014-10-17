@@ -39,4 +39,10 @@
     <item name="android:textStyle">italic</item>
     <item name="android:gravity">end</item>
   </style>
+
+  <style name="Button.DetailReadMore" parent="@android:style/Widget.Holo.Button.Borderless">
+    <item name="android:textColor">@color/gray_dark</item>
+    <item name="android:fontFamily">sans-serif-normal</item>
+  </style>
+
 </resources>

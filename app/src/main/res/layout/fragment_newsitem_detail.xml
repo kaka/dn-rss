@@ -1,53 +1,78 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="kaka.android.dn.NewsItemDetailFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fillViewport="true"
     >
 
-  <TextView
-      android:id="@+id/title"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textIsSelectable="true"
-      android:text="Title"
-      style="@style/Text.DetailTitle"
-      />
+      android:orientation="vertical"
+      >
 
-  <View
-      android:layout_width="match_parent"
-      android:layout_height="2dp"
-      android:layout_marginLeft="@dimen/text_horizontal_margin"
-      android:layout_marginRight="@dimen/text_horizontal_margin"
-      android:background="#f00"
-      />
+    <TextView
+	android:id="@+id/title"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:textIsSelectable="true"
+	android:text="Title"
+	style="@style/Text.DetailTitle"
+	/>
 
-  <TextView
-      android:id="@+id/description"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:textIsSelectable="true"
-      android:text="Description"
-      style="@style/Text.DetailDescription"
-      />
+    <View
+	android:layout_width="match_parent"
+	android:layout_height="2dp"
+	android:layout_marginLeft="@dimen/text_horizontal_margin"
+	android:layout_marginRight="@dimen/text_horizontal_margin"
+	android:background="#f00"
+	/>
 
-  <View
-      android:layout_width="match_parent"
-      android:layout_height="1px"
-      android:layout_marginLeft="@dimen/text_horizontal_margin"
-      android:layout_marginRight="@dimen/text_horizontal_margin"
-      android:background="#2000"
-      />
+    <TextView
+	android:id="@+id/description"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:textIsSelectable="true"
+	android:text="Description"
+	style="@style/Text.DetailDescription"
+	/>
 
-  <TextView
-      android:id="@+id/date"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:textIsSelectable="true"
-      android:text="Date"
-      style="@style/Text.DetailDate"
-      />
+    <View
+	android:layout_width="match_parent"
+	android:layout_height="1px"
+	android:layout_marginLeft="@dimen/text_horizontal_margin"
+	android:layout_marginRight="@dimen/text_horizontal_margin"
+	android:background="#2000"
+	/>
 
-</LinearLayout>
+    <TextView
+	android:id="@+id/date"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:textIsSelectable="true"
+	android:text="Date"
+	style="@style/Text.DetailDate"
+	/>
+
+    <FrameLayout
+	android:layout_width="match_parent"
+	android:layout_height="0dp"
+	android:layout_weight="1"
+	>
+
+      <Button
+	  android:id="@+id/read_more"
+	  android:layout_width="match_parent"
+	  android:layout_height="wrap_content"
+	  android:layout_margin="16dp"
+	  android:layout_gravity="bottom"
+	  android:text="@string/detail_read_more"
+	  style="@style/Button.DetailReadMore"
+	  />
+    </FrameLayout>
+
+  </LinearLayout>
+
+</ScrollView>

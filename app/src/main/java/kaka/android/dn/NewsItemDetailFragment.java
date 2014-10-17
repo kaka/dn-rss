@@ -1,13 +1,13 @@
 package kaka.android.dn;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
 
 
 /**
@@ -56,6 +56,14 @@ public class NewsItemDetailFragment extends Fragment {
 	    ((TextView)rootView.findViewById(R.id.description)).setText(mItem.getDescription());
 	    String date = mItem.getDateWithFormat("yyyy-MM-dd HH:mm:ss");
 	    ((TextView)rootView.findViewById(R.id.date)).setText(getString(R.string.item_published, date));
+	    rootView.findViewById(R.id.read_more).setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+		    Uri uri = Uri.parse(mItem.getLink());
+		    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		    startActivity(intent);
+		}
+	    });
         }
 
         return rootView;
