@@ -27,6 +27,7 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
     private ViewPager viewPager;
     private PagerAdapter adapter;
     private boolean isDraggingViewPager;
+    private Timer timer;
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,7 +85,9 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
 
     private void setupTimerTask() {
 	long interval = 4000;
-	Timer timer = new Timer(true);
+	if (timer != null)
+	    return;
+	timer = new Timer(true);
 	timer.scheduleAtFixedRate(new TimerTask() {
 	    @Override
 	    public void run() {
@@ -123,6 +126,20 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
         mListener = null;
 
 	App.news.removeEventListener(this);
+    }
+
+    @Override
+    public void onPause() {
+	super.onPause();
+	timer.cancel();
+	timer.purge();
+	timer = null;
+    }
+
+    @Override
+    public void onResume() {
+	super.onResume();
+	setupTimerTask();
     }
 
     @Override
