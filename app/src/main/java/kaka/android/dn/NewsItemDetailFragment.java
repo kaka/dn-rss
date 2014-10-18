@@ -5,8 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 
@@ -45,6 +49,8 @@ public class NewsItemDetailFragment extends Fragment {
 		getActivity().getFragmentManager().popBackStack();
 	    }
         }
+
+	setHasOptionsMenu(true);
     }
 
     @Override
@@ -77,5 +83,22 @@ public class NewsItemDetailFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	Intent i = new Intent();
+	i.setAction(Intent.ACTION_SEND);
+	i.putExtra(Intent.EXTRA_SUBJECT, mItem.getTitle());
+	i.putExtra(Intent.EXTRA_TEXT, String.format("%s\n\n%s", mItem.getDescription(), mItem.getLink()));
+	i.setType("text/plain");
+
+	ShareActionProvider sap = new ShareActionProvider(getActivity());
+	sap.setShareIntent(i);
+
+	MenuItem mi = menu.add(getString(R.string.share));
+	mi.setActionProvider(sap);
+	mi.setEnabled(false);
+	mi.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 }
