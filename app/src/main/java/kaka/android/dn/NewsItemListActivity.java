@@ -24,7 +24,8 @@ import android.app.Activity;
  * to listen for item selections.
  */
 public class NewsItemListActivity extends Activity
-        implements NewsItemListFragment.Callbacks {
+        implements NewsItemListFragment.Callbacks,
+	NewsItemSlideshowFragment.OnFragmentInteractionListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -60,24 +61,33 @@ public class NewsItemListActivity extends Activity
      */
     @Override
     public void onItemSelected(String id) {
-        if (mTwoPane) {
-            // In two-pane mode, show the detail view in this activity by
-            // adding or replacing the detail fragment using a
-            // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(NewsItemDetailFragment.ARG_ITEM_ID, id);
-            NewsItemDetailFragment fragment = new NewsItemDetailFragment();
-            fragment.setArguments(arguments);
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.newsitem_detail_container, fragment)
-                    .commit();
+	showNewsItem(id);
+    }
 
-        } else {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-            Intent detailIntent = new Intent(this, NewsItemDetailActivity.class);
-            detailIntent.putExtra(NewsItemDetailFragment.ARG_ITEM_ID, id);
-            startActivity(detailIntent);
-        }
+    @Override
+    public void onSlideClick(String id) {
+	showNewsItem(id);
+    }
+
+    private void showNewsItem(String id) {
+	if (mTwoPane) {
+	    // In two-pane mode, show the detail view in this activity by
+	    // adding or replacing the detail fragment using a
+	    // fragment transaction.
+	    Bundle arguments = new Bundle();
+	    arguments.putString(NewsItemDetailFragment.ARG_ITEM_ID, id);
+	    NewsItemDetailFragment fragment = new NewsItemDetailFragment();
+	    fragment.setArguments(arguments);
+	    getFragmentManager().beginTransaction()
+		    .replace(R.id.newsitem_detail_container, fragment)
+		    .commit();
+
+	} else {
+	    // In single-pane mode, simply start the detail activity
+	    // for the selected item ID.
+	    Intent detailIntent = new Intent(this, NewsItemDetailActivity.class);
+	    detailIntent.putExtra(NewsItemDetailFragment.ARG_ITEM_ID, id);
+	    startActivity(detailIntent);
+	}
     }
 }

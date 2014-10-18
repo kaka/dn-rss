@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_dark"
+    android:clickable="true"
+    >
+
+  <TextView
+      android:id="@+id/title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Title"
+      android:textColor="#fff"
+      style="@style/Text.DetailTitle"
+      />
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="2dp"
+      android:layout_marginLeft="@dimen/text_horizontal_margin"
+      android:layout_marginRight="@dimen/text_horizontal_margin"
+      android:background="#f00"
+      />
+
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:foreground="@drawable/gradient_slideshow"
+      >
+
+    <TextView
+	android:id="@+id/description"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_marginBottom="0dp"
+	android:text="Description"
+	android:textColor="#fff"
+	android:textSize="18sp"
+	android:lines="3"
+	android:ellipsize="end"
+	style="@style/Text.DetailDescription"
+	/>
+
+  </FrameLayout>
+
+</LinearLayout>
