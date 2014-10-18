@@ -88,6 +88,7 @@ public class NewsItemListActivity extends Activity
 	    Intent detailIntent = new Intent(this, NewsItemDetailActivity.class);
 	    detailIntent.putExtra(NewsItemDetailFragment.ARG_ITEM_ID, id);
 	    startActivity(detailIntent);
+	    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}
     }
 }
