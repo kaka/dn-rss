@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,10 +22,11 @@ import android.widget.TextView;
  *
  */
 public class NewsItemSlideshowFragment extends Fragment implements NewsManager.EventListener,
-	View.OnClickListener
+	View.OnClickListener, ViewPager.OnPageChangeListener
 {
     private ViewPager viewPager;
     private PagerAdapter adapter;
+    private boolean isDraggingViewPager;
 
     private OnFragmentInteractionListener mListener;
 
@@ -49,7 +53,7 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
 	    @Override
 	    public Object instantiateItem(ViewGroup container, int position) {
 		View view = LayoutInflater.from(App.context())
-			    .inflate(R.layout.slideshow_item, container, false);
+			.inflate(R.layout.slideshow_item, container, false);
 
 		NewsItem item = App.news.getItems().get(position);
 		((TextView)(view.findViewById(R.id.title))).setText(item.getTitle());
@@ -71,17 +75,33 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
 		return view == o;
 	    }
 	});
+	viewPager.setOnPageChangeListener(NewsItemSlideshowFragment.this);
+
+	setupTimerTask();
 
 	return root;
     }
 
-    @Override
-    public void onClick(View v) {
-	int position = viewPager.getCurrentItem();
-	NewsItem item = App.news.getItems().get(position);
-	if (mListener != null) {
-	    mListener.onSlideClick(item.getId());
-	}
+    private void setupTimerTask() {
+	long interval = 4000;
+	Timer timer = new Timer(true);
+	timer.scheduleAtFixedRate(new TimerTask() {
+	    @Override
+	    public void run() {
+		if (!isDraggingViewPager) {
+		    App.runOnUiThread(new Runnable() {
+			public void run() {
+			    int current = viewPager.getCurrentItem();
+			    int count = adapter.getCount();
+			    int next = (current + 1) % count;
+			    if (count > 0) {
+				viewPager.setCurrentItem(next, true);
+			    }
+			}
+		    });
+		}
+	    }
+	}, interval, interval);
     }
 
     @Override
@@ -108,6 +128,33 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
     @Override
     public void onEvent(NewsManager.Event e) {
 	adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+	int position = viewPager.getCurrentItem();
+	NewsItem item = App.news.getItems().get(position);
+	if (mListener != null) {
+	    mListener.onSlideClick(item.getId());
+	}
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i2) {
+    }
+    @Override
+    public void onPageSelected(int i) {
+    }
+    @Override
+    public void onPageScrollStateChanged(int i) {
+	switch (i) {
+	    case ViewPager.SCROLL_STATE_DRAGGING:
+		isDraggingViewPager = true;
+		break;
+	    case ViewPager.SCROLL_STATE_IDLE:
+		isDraggingViewPager = false;
+		break;
+	}
     }
 
     /**
