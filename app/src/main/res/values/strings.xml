@@ -11,5 +11,6 @@
   <string name="new_item">ny</string>
   <string name="refresh">Uppdatera</string>
   <string name="no_connectivity">Ingen nätåtkomst</string>
+  <string name="failed_to_refresh">Kunde inte uppdatera</string>
 
 </resources>

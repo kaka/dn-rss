@@ -87,10 +87,14 @@ public class NewsItemListActivity extends Activity
 
     @Override
     public void onEvent(NewsManager.Event e) {
-	if (e == NewsManager.Event.REFRESHED_NEWS || e == NewsManager.Event.REFRESH_FAILED) {
-	    if (refreshItem != null)
-		refreshItem.setVisible(true);
-	    setProgressBarIndeterminateVisibility(false);
+	switch (e) {
+	    case REFRESH_FAILED:
+		App.toast(R.string.failed_to_refresh);
+	    case REFRESHED_NEWS:
+		if (refreshItem != null)
+		    refreshItem.setVisible(true);
+		setProgressBarIndeterminateVisibility(false);
+		break;
 	}
     }
 
