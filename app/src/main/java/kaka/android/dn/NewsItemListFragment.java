@@ -1,6 +1,7 @@
 package kaka.android.dn;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.view.LayoutInflater;
@@ -100,11 +101,14 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 		    holder.title = App.findViewById(convertView, R.id.title);
 		    holder.time = App.findViewById(convertView, R.id.time);
 		    holder.is_new = App.findViewById(convertView, R.id.is_new);
+		    if (titleFont == null)
+			titleFont = holder.title.getTypeface();
 		} else {
 		    holder = (Holder)convertView.getTag();
 		}
 
 		NewsItem item = (NewsItem)getItem(position);
+		holder.title.setTypeface(titleFont, App.news.isItemRead(item) ? Typeface.NORMAL : Typeface.BOLD);
 		holder.title.setText(item.getTitle());
 		holder.time.setText(Utils.timeAgo(item.getDate()));
 		holder.is_new.setVisibility(App.news.isItemNew(item) ? View.VISIBLE : View.GONE);
@@ -112,6 +116,7 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 		return convertView;
 	    }
 
+	    Typeface titleFont;
 	    class Holder {
 		TextView title, time, is_new;
 	    }
@@ -155,11 +160,14 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
-        super.onListItemClick(listView, view, position, id);
+	super.onListItemClick(listView, view, position, id);
 
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-	mCallbacks.onItemSelected(((NewsItem)(adapter.getItem(position))).getId());
+	// Notify the active callbacks interface (the activity, if the
+	// fragment is attached to one) that an item has been selected.
+	NewsItem item = (NewsItem)adapter.getItem(position);
+	App.news.readItem(item);
+	adapter.notifyDataSetChanged();
+	mCallbacks.onItemSelected(item.getId());
     }
 
     @Override

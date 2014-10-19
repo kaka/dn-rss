@@ -14,17 +14,20 @@ import java.util.HashSet;
 
 public class NewsManager
 {
-    private static final String CACHE_KEY = "cache";
+    private Cache<HashSet<NewsItem>> itemCache = new Cache<HashSet<NewsItem>>("items");
+    private Cache<HashSet<String>> readCache = new Cache<HashSet<String>>("read items");
 
     private ArrayList<NewsItem> items = new ArrayList<NewsItem>();
     private HashSet<NewsItem> itemSet = new HashSet<NewsItem>();
     private HashSet<NewsItem> newItems = new HashSet<NewsItem>();
+    private HashSet<String> readItems = new HashSet<String>();
+
     private ArrayList<EventListener> eventListeners = new ArrayList<EventListener>();
 
     public NewsManager() {
 	new Thread() {
 	    public void run() {
-		loadItems();
+		loadFromCache();
 	    }
 	}.start();
     }
@@ -80,7 +83,7 @@ public class NewsManager
 
 		    notifyListeners(Event.REFRESHED_NEWS);
 
-		    saveItems();
+		    saveToCache();
 		} else {
 		    notifyListeners(Event.REFRESH_FAILED);
 		}
@@ -176,6 +179,19 @@ public class NewsManager
 	return newItems.contains(item);
     }
 
+    public boolean isItemRead(NewsItem item) {
+	return readItems.contains(item.getId());
+    }
+
+    public void readItem(NewsItem item) {
+	readItems.add(item.getId());
+	new Thread() {
+	    public void run() {
+		saveReadItemCache();
+	    }
+	}.start();
+    }
+
     private void addItems(Collection<NewsItem> collection) {
 	if (collection == null)
 	    return;
@@ -193,42 +209,42 @@ public class NewsManager
 	});
     }
 
-    private void loadItems() {
-	addItems(loadFromCache());
+    private void loadFromCache() {
+	addItems(itemCache.load());
+	App.log.d(this, "Loaded %d items from cache", itemSet.size());
+
+	HashSet<String> read = readCache.load();
+	if (read != null)
+	    readItems = read;
+	App.log.d(this, "Loaded %d read items from cache", readItems.size());
+
 	notifyListeners(Event.LOADED_CACHE);
     }
 
-    private void saveItems() {
-	// Filter out outdated news
-	HashSet<NewsItem> set = new HashSet<NewsItem>(itemSet.size());
-	long timeLimit = System.currentTimeMillis() - 1000*60*60*24*2;
+    private void saveToCache() {
+	{ // Filter out outdated news
+	    HashSet<NewsItem> set = new HashSet<NewsItem>(itemSet.size());
+	    long timeLimit = System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 2;
+	    for (NewsItem i : itemSet)
+		if (i.getDate().getTime() >= timeLimit)
+		    set.add(i);
+	    if (itemCache.save(set))
+		App.log.d(this, "Saved %d items to cache", set.size());
+	}
+
+	saveReadItemCache();
+    }
+
+    private void saveReadItemCache() {
+	// Filter out ids of no longer maintained news
+	HashSet<String> cached = new HashSet<String>();
 	for (NewsItem i : itemSet)
-	    if (i.getDate().getTime() >= timeLimit)
-		set.add(i);
-	saveToCache(set);
-    }
-
-    private void saveToCache(HashSet<NewsItem> items) {
-	try {
-	    App.sharedPreferences().edit().putString(CACHE_KEY, Utils.serializeToString(items)).commit();
-	    App.log.i(this, "saved %d items to cache", items.size());
-	} catch (Exception e) {
-	    App.log.e(this, "Failed to save to cache", e);
-	}
-    }
-
-    @SuppressWarnings("unchecked")
-    private HashSet<NewsItem> loadFromCache() {
-	String s = App.sharedPreferences().getString(CACHE_KEY, null);
-	if (s != null) {
-	    try {
-		HashSet<NewsItem> set = (HashSet<NewsItem>)Utils.deserializeFromString(s);
-		App.log.i(this, "loaded %d items from cache", set.size());
-		return set;
-	    } catch (Exception e) {
-		App.log.e(this, "Failed to load from cache", e);
-	    }
-	}
-	return null;
+	    cached.add(i.getId());
+	HashSet<String> read = new HashSet<String>();
+	for (String id : readItems)
+	    if (cached.contains(id))
+		read.add(id);
+	if (readCache.save(read))
+	    App.log.d(this, "Saved %d read items to cache", read.size());
     }
 }
