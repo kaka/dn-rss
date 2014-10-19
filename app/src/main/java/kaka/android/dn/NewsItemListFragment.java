@@ -166,7 +166,6 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 	// fragment is attached to one) that an item has been selected.
 	NewsItem item = (NewsItem)adapter.getItem(position);
 	App.news.readItem(item);
-	adapter.notifyDataSetChanged();
 	mCallbacks.onItemSelected(item.getId());
     }
 
@@ -181,8 +180,11 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 
     @Override
     public void onEvent(NewsManager.Event e) {
-	if (e == NewsManager.Event.REFRESHED_NEWS || e == NewsManager.Event.LOADED_CACHE) {
-	    adapter.notifyDataSetChanged();
+	switch (e) {
+	    case REFRESHED_NEWS:
+	    case LOADED_CACHE:
+	    case READ_NEWS:
+		adapter.notifyDataSetChanged();
 	}
     }
 

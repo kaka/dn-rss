@@ -58,7 +58,8 @@ public class NewsManager
     public static enum Event {
 	REFRESHED_NEWS,
 	REFRESH_FAILED,
-	LOADED_CACHE
+	LOADED_CACHE,
+	READ_NEWS,
     }
 
     public void refresh() {
@@ -201,6 +202,8 @@ public class NewsManager
 		saveReadItemCache();
 	    }
 	}.start();
+
+	notifyListeners(Event.READ_NEWS);
     }
 
     private void addItems(Collection<NewsItem> collection) {

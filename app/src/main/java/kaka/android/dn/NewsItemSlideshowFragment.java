@@ -151,6 +151,7 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
     public void onClick(View v) {
 	int position = viewPager.getCurrentItem();
 	NewsItem item = App.news.getItems().get(position);
+	App.news.readItem(item);
 	if (mListener != null) {
 	    mListener.onSlideClick(item.getId());
 	}
