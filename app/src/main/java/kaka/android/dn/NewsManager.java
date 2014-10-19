@@ -18,6 +18,7 @@ public class NewsManager
 
     private ArrayList<NewsItem> items = new ArrayList<NewsItem>();
     private HashSet<NewsItem> itemSet = new HashSet<NewsItem>();
+    private HashSet<NewsItem> newItems = new HashSet<NewsItem>();
     private ArrayList<EventListener> eventListeners = new ArrayList<EventListener>();
 
     public NewsManager() {
@@ -62,7 +63,14 @@ public class NewsManager
 		InputStream stream = fetch("http://www.dn.se/nyheter/m/rss/");
 		XmlPullParser parser = buildParser(stream);
 		if (stream != null && parser != null) {
-		    addItems(parseXML(parser));
+		    ArrayList<NewsItem> list = parseXML(parser);
+
+		    newItems.clear();
+		    for (NewsItem i : list)
+			if (!itemSet.contains(i))
+			    newItems.add(i);
+
+		    addItems(list);
 
 		    try {
 			stream.close();
@@ -164,6 +172,10 @@ public class NewsManager
 	return null;
     }
 
+    public boolean isItemNew(NewsItem item) {
+	return newItems.contains(item);
+    }
+
     private void addItems(Collection<NewsItem> collection) {
 	if (collection == null)
 	    return;
@@ -172,6 +184,7 @@ public class NewsManager
 	items.clear();
 	for (NewsItem i : itemSet)
 	    items.add(i);
+
 	Collections.sort(items, new Comparator<NewsItem>() {
 	    @Override
 	    public int compare(NewsItem lhs, NewsItem rhs) {
@@ -198,6 +211,7 @@ public class NewsManager
     private void saveToCache(HashSet<NewsItem> items) {
 	try {
 	    App.sharedPreferences().edit().putString(CACHE_KEY, Utils.serializeToString(items)).commit();
+	    App.log.i(this, "saved %d items to cache", items.size());
 	} catch (Exception e) {
 	    App.log.e(this, "Failed to save to cache", e);
 	}
@@ -208,7 +222,9 @@ public class NewsManager
 	String s = App.sharedPreferences().getString(CACHE_KEY, null);
 	if (s != null) {
 	    try {
-		return (HashSet<NewsItem>)Utils.deserializeFromString(s);
+		HashSet<NewsItem> set = (HashSet<NewsItem>)Utils.deserializeFromString(s);
+		App.log.i(this, "loaded %d items from cache", set.size());
+		return set;
 	    } catch (Exception e) {
 		App.log.e(this, "Failed to load from cache", e);
 	    }

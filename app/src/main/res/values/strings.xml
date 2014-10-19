@@ -8,6 +8,7 @@
   <string name="yesterday">igår</string>
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="share">Dela</string>
+  <string name="new_item">ny</string>
   <string name="refresh">Uppdatera</string>
 
 </resources>

@@ -99,6 +99,7 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 		    convertView.setTag(holder = new Holder());
 		    holder.title = App.findViewById(convertView, R.id.title);
 		    holder.time = App.findViewById(convertView, R.id.time);
+		    holder.is_new = App.findViewById(convertView, R.id.is_new);
 		} else {
 		    holder = (Holder)convertView.getTag();
 		}
@@ -106,12 +107,13 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 		NewsItem item = (NewsItem)getItem(position);
 		holder.title.setText(item.getTitle());
 		holder.time.setText(Utils.timeAgo(item.getDate()));
+		holder.is_new.setVisibility(App.news.isItemNew(item) ? View.VISIBLE : View.GONE);
 
 		return convertView;
 	    }
 
 	    class Holder {
-		TextView title, time;
+		TextView title, time, is_new;
 	    }
 	});
     }
