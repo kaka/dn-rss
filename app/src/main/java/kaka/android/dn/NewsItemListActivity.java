@@ -59,7 +59,6 @@ public class NewsItemListActivity extends Activity
         App.news.addEventListener(this);
 	if (App.hasConnectivity()) {
 	    App.news.refresh();
-	    setProgressBarIndeterminateVisibility(true);
 	} else {
 	    App.toast(R.string.no_connectivity);
 	}
@@ -78,8 +77,6 @@ public class NewsItemListActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
 	if (item == refreshItem) {
 	    App.news.refresh();
-	    refreshItem.setVisible(false);
-	    setProgressBarIndeterminateVisibility(true);
 	    return true;
 	}
 	return false;
@@ -94,6 +91,12 @@ public class NewsItemListActivity extends Activity
 		if (refreshItem != null)
 		    refreshItem.setVisible(true);
 		setProgressBarIndeterminateVisibility(false);
+		break;
+
+	    case REFRESHING:
+		if (refreshItem != null)
+		    refreshItem.setVisible(false);
+		setProgressBarIndeterminateVisibility(true);
 		break;
 	}
     }

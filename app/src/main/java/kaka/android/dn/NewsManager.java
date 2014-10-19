@@ -56,6 +56,7 @@ public class NewsManager
     }
 
     public static enum Event {
+	REFRESHING,
 	REFRESHED_NEWS,
 	REFRESH_FAILED,
 	LOADED_CACHE,
@@ -66,6 +67,7 @@ public class NewsManager
 	if (isRefreshing)
 	    return;
 	isRefreshing = true;
+	notifyListeners(Event.REFRESHING);
 
 	new Thread() {
 	    public void run() {
