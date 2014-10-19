@@ -57,8 +57,12 @@ public class NewsItemListActivity extends Activity
         }
 
         App.news.addEventListener(this);
-	App.news.refresh();
-	setProgressBarIndeterminateVisibility(true);
+	if (App.hasConnectivity()) {
+	    App.news.refresh();
+	    setProgressBarIndeterminateVisibility(true);
+	} else {
+	    App.toast(R.string.no_connectivity);
+	}
     }
 
     @Override
@@ -66,7 +70,7 @@ public class NewsItemListActivity extends Activity
 	refreshItem = menu.add(getString(R.string.refresh));
 	refreshItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 	refreshItem.setIcon(R.drawable.ic_action_navigation_refresh);
-	refreshItem.setVisible(false); // since a refresh is always issued at startup
+	refreshItem.setVisible(!App.news.isRefreshing());
 	return true;
     }
 

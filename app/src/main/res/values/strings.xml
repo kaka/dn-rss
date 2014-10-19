@@ -10,5 +10,6 @@
   <string name="share">Dela</string>
   <string name="new_item">ny</string>
   <string name="refresh">Uppdatera</string>
+  <string name="no_connectivity">Ingen nätåtkomst</string>
 
 </resources>

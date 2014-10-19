@@ -23,6 +23,7 @@ public class NewsManager
     private HashSet<String> readItems = new HashSet<String>();
 
     private ArrayList<EventListener> eventListeners = new ArrayList<EventListener>();
+    private boolean isRefreshing;
 
     public NewsManager() {
 	new Thread() {
@@ -61,6 +62,10 @@ public class NewsManager
     }
 
     public void refresh() {
+	if (isRefreshing)
+	    return;
+	isRefreshing = true;
+
 	new Thread() {
 	    public void run() {
 		InputStream stream = fetch("http://www.dn.se/nyheter/m/rss/");
@@ -87,8 +92,14 @@ public class NewsManager
 		} else {
 		    notifyListeners(Event.REFRESH_FAILED);
 		}
+
+		isRefreshing = false;
 	    }
 	}.start();
+    }
+
+    public boolean isRefreshing() {
+	return isRefreshing;
     }
 
     private InputStream fetch(String urlString) {
