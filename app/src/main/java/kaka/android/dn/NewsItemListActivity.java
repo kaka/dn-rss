@@ -3,8 +3,9 @@ package kaka.android.dn;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-
-
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
 
 
 /**
@@ -25,17 +26,20 @@ import android.app.Activity;
  */
 public class NewsItemListActivity extends Activity
         implements NewsItemListFragment.Callbacks,
-	NewsItemSlideshowFragment.OnFragmentInteractionListener {
+	NewsItemSlideshowFragment.OnFragmentInteractionListener,
+	NewsManager.EventListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+    private MenuItem refreshItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_newsitem_list);
 
         if (findViewById(R.id.newsitem_detail_container) != null) {
@@ -52,7 +56,38 @@ public class NewsItemListActivity extends Activity
                     .setActivateOnItemClick(true);
         }
 
-        // TODO: If exposing deep links into your app, handle intents here.
+        App.news.addEventListener(this);
+	App.news.refresh();
+	setProgressBarIndeterminateVisibility(true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	refreshItem = menu.add(getString(R.string.refresh));
+	refreshItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+	refreshItem.setIcon(R.drawable.ic_action_navigation_refresh);
+	refreshItem.setVisible(false); // since a refresh is always issued at startup
+	return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	if (item == refreshItem) {
+	    App.news.refresh();
+	    refreshItem.setVisible(false);
+	    setProgressBarIndeterminateVisibility(true);
+	    return true;
+	}
+	return false;
+    }
+
+    @Override
+    public void onEvent(NewsManager.Event e) {
+	if (e == NewsManager.Event.REFRESHED_NEWS || e == NewsManager.Event.REFRESH_FAILED) {
+	    if (refreshItem != null)
+		refreshItem.setVisible(true);
+	    setProgressBarIndeterminateVisibility(false);
+	}
     }
 
     /**

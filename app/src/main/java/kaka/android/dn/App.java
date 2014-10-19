@@ -40,7 +40,6 @@ public class App extends Application
 	App.INSTANCE = this;
 
 	news = new NewsManager();
-	news.refresh();
 
 	uiThread = context().getMainLooper().getThread();
 	uiHandler = new Handler(context().getMainLooper());
