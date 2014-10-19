@@ -91,15 +91,13 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
 	timer.scheduleAtFixedRate(new TimerTask() {
 	    @Override
 	    public void run() {
-		if (!isDraggingViewPager) {
+		final int count = adapter.getCount();
+		if (!isDraggingViewPager && count > 0) {
 		    App.runOnUiThread(new Runnable() {
 			public void run() {
 			    int current = viewPager.getCurrentItem();
-			    int count = adapter.getCount();
 			    int next = (current + 1) % count;
-			    if (count > 0) {
-				viewPager.setCurrentItem(next, true);
-			    }
+			    viewPager.setCurrentItem(next, true);
 			}
 		    });
 		}
@@ -144,7 +142,9 @@ public class NewsItemSlideshowFragment extends Fragment implements NewsManager.E
 
     @Override
     public void onEvent(NewsManager.Event e) {
-	adapter.notifyDataSetChanged();
+	if (e == NewsManager.Event.REFRESHED_NEWS || e == NewsManager.Event.LOADED_CACHE) {
+	    adapter.notifyDataSetChanged();
+	}
     }
 
     @Override

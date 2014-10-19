@@ -1,10 +1,11 @@
 package kaka.android.dn;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class NewsItem
+public class NewsItem implements Serializable
 {
     private static final SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 
@@ -58,5 +59,15 @@ public class NewsItem
 
     public String getDateWithFormat(String format) {
 	return new SimpleDateFormat(format).format(date);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+	return this == o || o instanceof NewsItem && link.equals(((NewsItem) o).link);
+    }
+
+    @Override
+    public int hashCode() {
+	return link.hashCode();
     }
 }

@@ -1,5 +1,12 @@
 package kaka.android.dn;
 
+import android.util.Base64;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,5 +33,21 @@ public class Utils
 	Date yesterday = new Date();
 	yesterday.setTime(yesterday.getTime() - 1000*60*60*24);
 	return dateFormat.format(date).equals(dateFormat.format(yesterday));
+    }
+
+    public static Object deserializeFromString(String str) throws IOException, ClassNotFoundException {
+	byte[] data = Base64.decode(str, 0);
+	ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+	Object o = ois.readObject();
+	ois.close();
+	return o;
+    }
+
+    public static String serializeToString(Object obj) throws IOException {
+	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	ObjectOutputStream oos = new ObjectOutputStream(baos);
+	oos.writeObject(obj);
+	oos.close();
+	return Base64.encodeToString(baos.toByteArray(), 0);
     }
 }

@@ -171,7 +171,7 @@ public class NewsItemListFragment extends ListFragment implements NewsManager.Ev
 
     @Override
     public void onEvent(NewsManager.Event e) {
-	if (e == NewsManager.Event.REFRESHED_NEWS) {
+	if (e == NewsManager.Event.REFRESHED_NEWS || e == NewsManager.Event.LOADED_CACHE) {
 	    adapter.notifyDataSetChanged();
 	}
     }
