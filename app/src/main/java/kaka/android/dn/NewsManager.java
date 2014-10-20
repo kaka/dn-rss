@@ -1,5 +1,7 @@
 package kaka.android.dn;
 
+import android.text.Html;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -158,11 +160,11 @@ public class NewsManager
 				list.add(item);
 				item = null;
 			    } else if (name.equals("title")) {
-				item.setTitle(text);
+				item.setTitle(Html.fromHtml(text).toString());
 			    } else if (name.equals("link")) {
 				item.setLink(text);
 			    } else if (name.equals("description")) {
-				item.setDescription(text);
+				item.setDescription(Html.fromHtml(text).toString());
 			    } else if (name.equals("pubDate")) {
 				item.setPubDate(text);
 			    }
